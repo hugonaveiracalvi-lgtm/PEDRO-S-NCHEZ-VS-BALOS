@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedro Sánchez vs Ábalos</title>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff9d;
+            --neon-yellow: #ffff00;
+            --neon-orange: #ff6b00;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+            --card-bg: rgba(20, 20, 40, 0.9);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0ff;
+            --accent-gradient: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--neon-green));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        /* Modal de nombre de usuario */
+        .user-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 16, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+        }
+        
+        .user-modal-content {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 50px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            border: 2px solid var(--glass-border);
+            box-shadow: 
+                0 0 80px rgba(0, 243, 255, 0.2),
+                0 25px 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .user-modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+        
+        .user-modal h2 {
+            font-size: 2.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .user-modal p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .username-input {
+            width: 100%;
+            padding: 20px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .username-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .username-btn {
+            padding: 20px 50px;
+            font-size: 1.4rem;
+            background: var(--accent-gradient);
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+        }
+        
+        .username-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.4);
+        }
+        
+        /* Header moderno mejorado */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            width: 100%;
+            max-width: 1400px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 5px;
+            background: var(--accent-gradient);
+            border-radius: 5px;
+            filter: blur(2px);
+        }
+        
+        h1 {
+            font-size: 3.8rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            padding: 0 30px;
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--neon-green);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 25px;
+            padding: 15px 30px;
+            background: rgba(0, 255, 157, 0.1);
+            border-radius: 12px;
+            display: inline-block;
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            opacity: 0.9;
+        }
+        
+        /* Contenedor del juego */
+        .game-container {
+            width: 100%;
+            max-width: 1400px;
+            height: 550px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 40px;
+            box-shadow: 
+                0 0 60px rgba(0, 243, 255, 0.15),
+                0 0 120px rgba(255, 0, 255, 0.08),
+                inset 0 0 100px rgba(0, 255, 157, 0.05);
+            border: 1px solid var(--glass-border);
+            background: rgba(10, 10, 25, 0.6);
+            backdrop-filter: blur(10px);
+        }
+        
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        /* Indicadores de puntuación */
+        .score-container, .high-score {
+            position: absolute;
+            padding: 15px 25px;
+            border-radius: 15px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            z-index: 5;
+            font-weight: 700;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .score-container {
+            top: 25px;
+            right: 25px;
+            font-size: 2.2rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+            border-color: rgba(0, 255, 157, 0.3);
+        }
+        
+        .high-score {
+            top: 25px;
+            left: 25px;
+            font-size: 1.3rem;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            border-color: rgba(255, 255, 0, 0.3);
+        }
+        
+        /* Pantalla de Game Over */
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 16, 0.95);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 15;
+            text-align: center;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .game-over h2 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ff0000, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            line-height: 1.2;
+        }
+        
+        .game-over p {
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .abalos-gif {
+            max-width: 250px;
+            max-height: 180px;
+            margin-bottom: 40px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            box-shadow: 
+                0 0 30px rgba(255, 0, 0, 0.3),
+                inset 0 0 30px rgba(255, 0, 0, 0.1);
+        }
+        
+        .restart-btn {
+            padding: 20px 50px;
+            font-size: 1.4rem;
+            background: linear-gradient(45deg, #ff0000, #ff6b6b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 40px rgba(255, 0, 0, 0.3);
+        }
+        
+        .restart-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(255, 0, 0, 0.5);
+        }
+        
+        /* Controles */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0 40px;
+            width: 100%;
+            max-width: 1400px;
+            flex-wrap: wrap;
+        }
+        
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            min-width: 180px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-blue);
+            box-shadow: 
+                0 15px 45px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(0, 243, 255, 0.2);
+        }
+        
+        .key {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+        
+        .key-text {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        /* Instrucción de inicio */
+        .start-instruction {
+            text-align: center;
+            margin: 20px 0 30px;
+            color: var(--neon-blue);
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            animation: pulse 2s infinite;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        /* Tabla de clasificación fija abajo */
+        .leaderboard {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 0 50px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 35px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 0 100px rgba(0, 243, 255, 0.05);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .leaderboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+        
+        .leaderboard h2 {
+            font-size: 2.2rem;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .leaderboard h2 span {
+            color: var(--neon-yellow);
+            margin: 0 15px;
+        }
+        
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
+        }
+        
+        .leaderboard-table th {
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--text-primary);
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+        
+        /* Mejorar ancho de columnas */
+        .leaderboard-table th:nth-child(1) { width: 15%; } /* Posición */
+        .leaderboard-table th:nth-child(2) { width: 35%; } /* Nombre */
+        .leaderboard-table th:nth-child(3) { width: 25%; } /* Puntuación */
+        .leaderboard-table th:nth-child(4) { width: 25%; } /* Fecha */
+        
+        .leaderboard-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+        
+        .leaderboard-table tr:hover {
+            background: rgba(0, 243, 255, 0.05);
+            transform: translateX(5px);
+        }
+        
+        .rank-1 {
+            color: var(--neon-yellow) !important;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            position: relative;
+        }
+        
+        .rank-1::before {
+            content: '👑';
+            margin-right: 10px;
+        }
+        
+        .rank-2 {
+            color: #c0c0c0 !important;
+            font-weight: 800;
+            position: relative;
+        }
+        
+        .rank-2::before {
+            content: '🥈';
+            margin-right: 10px;
+        }
+        
+        .rank-3 {
+            color: #cd7f32 !important;
+            font-weight: 800;
+            position: relative;
+        }
+        
+        .rank-3::before {
+            content: '🥉';
+            margin-right: 10px;
+        }
+        
+        .player-score {
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        }
+        
+        .player-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding: 25px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 1400px;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(10, 10, 25, 0.5);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Overlay de celebración */
+        .celebration-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+        
+        .celebration-image {
+            max-width: 400px;
+            max-height: 300px;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 50px rgba(0, 243, 255, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--neon-blue);
+            animation: celebrationAppear 0.5s ease, float 3s ease-in-out infinite 0.5s;
+        }
+        
+        @keyframes celebrationAppear {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            70% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        /* Animación para el puntaje */
+        @keyframes scorePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .score-pop {
+            animation: scorePop 0.3s ease;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .game-container {
+                height: 500px;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 1100px) {
+            .game-container {
+                height: 450px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .game-over h2 {
+                font-size: 3rem;
+            }
+            
+            .controls {
+                gap: 20px;
+            }
+            
+            .control-item {
+                min-width: 170px;
+                padding: 20px 25px;
+            }
+            
+            .key {
+                font-size: 2.5rem;
+            }
+            
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 15px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 0;
+            }
+            
+            .game-container {
+                height: 400px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+            
+            .game-over h2 {
+                font-size: 2.2rem;
+            }
+            
+            .game-over p {
+                font-size: 2.2rem;
+            }
+            
+            .score-container, .high-score {
+                padding: 12px 20px;
+                font-size: 1.8rem;
+            }
+            
+            .high-score {
+                font-size: 1.1rem;
+            }
+            
+            .controls {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+            
+            .control-item {
+                min-width: 45%;
+                padding: 18px 20px;
+            }
+            
+            .key {
+                font-size: 2.2rem;
+            }
+            
+            .leaderboard {
+                padding: 25px;
+            }
+            
+            .leaderboard h2 {
+                font-size: 1.8rem;
+            }
+            
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+            
+            .user-modal-content {
+                padding: 30px;
+            }
+            
+            .user-modal h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .game-container {
+                height: 350px;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+            
+            .game-over h2 {
+                font-size: 1.8rem;
+            }
+            
+            .game-over p {
+                font-size: 1.8rem;
+            }
+            
+            .control-item {
+                min-width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .leaderboard h2 {
+                font-size: 1.5rem;
+            }
+            
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal para nombre de usuario -->
+    <div class="user-modal" id="userModal">
+        <div class="user-modal-content">
+            <h2>¡BIENVENIDO!</h2>
+            <p>Antes de comenzar, introduce tu nombre para aparecer en la tabla de clasificación</p>
+            <input type="text" class="username-input" id="usernameInput" placeholder="Tu nombre aquí..." maxlength="20" autofocus>
+            <button class="username-btn" id="usernameBtn">COMENZAR JUEGO</button>
+        </div>
+    </div>
+    
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="header">
+        <h1>PEDRO SÁNCHEZ VS ÁBALOS</h1>
+        <div class="subtitle">AYUDA A PEDRO SÁNCHEZ A ESCAPAR DE LA CORRUPCIÓN</div>
+    </div>
+    
+    <div class="game-container">
+        <canvas id="gameCanvas" width="1400" height="550"></canvas>
+        <div class="high-score" id="highScoreDisplay">RÉCORD: <span id="highScore">0</span></div>
+        <div class="score-container" id="scoreDisplay">PUNTUACIÓN: <span id="score">0</span></div>
+        
+        <!-- Overlay para imagen de celebración -->
+        <div class="celebration-overlay" id="celebrationOverlay">
+            <img class="celebration-image" id="celebrationImage" src="sanchez-zoom-interior.jpg" alt="Pedro Sánchez celebrando">
+        </div>
+        
+        <!-- Pantalla de Game Over -->
+        <div class="game-over" id="gameOverScreen">
+            <img class="abalos-gif" id="abalosGif" src="abalos-rie.gif" alt="Ábalos riendo">
+            <h2>¡ÁBALOS TE HA PILLADO<br>ENTRE X ROJAS!</h2>
+            <p>Puntuación: <span id="finalScore">0</span></p>
+            <button class="restart-btn" id="restartBtn">JUGAR DE NUEVO</button>
+        </div>
+    </div>
+    
+    <div class="start-instruction" id="startInstruction">
+        PRESIONA ESPACIO O HAZ CLIC PARA COMENZAR
+    </div>
+    
+    <div class="controls">
+        <div class="control-item">
+            <div class="key">↑</div>
+            <div class="key-text">FLECHA ARRIBA<br>SALTAR</div>
+        </div>
+        <div class="control-item">
+            <div class="key">␣</div>
+            <div class="key-text">BARRA ESPACIADORA<br>SALTAR</div>
+        </div>
+        <div class="control-item">
+            <div class="key">↓</div>
+            <div class="key-text">FLECHA ABAJO<br>AGACHARSE</div>
+        </div>
+        <div class="control-item">
+            <div class="key">🖱️</div>
+            <div class="key-text">CLIC PANTALLA<br>SALTAR</div>
+        </div>
+    </div>
+    
+    <!-- Tabla de clasificación fija abajo -->
+    <div class="leaderboard">
+        <h2><span>🏆</span> CLASIFICACIÓN GLOBAL <span>🏆</span></h2>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>POSICIÓN</th>
+                    <th>JUGADOR</th>
+                    <th>PUNTUACIÓN</th>
+                    <th>FECHA</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+                <!-- Las filas se generarán dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="footer">
+        <p>Juego inspirado en el Dinosaurio de Google | ¡Ayuda a Pedro a escapar de la corrupción!</p>
+    </div>
+
+    <!-- Imágenes precargadas -->
+    <div style="display: none;">
+        <img id="pedroFaceImg" src="sanchez-635x358.webp">
+        <img id="abalosFaceImg" src="W7WBFXIPPJEWXNG5JC76VA7M6I.jpg">
+    </div>
+
+    <script>
+        // Variables globales
+        let currentUser = null;
+        
+        // Sistema de partículas para el fondo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                const size = Math.random() * 3 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                const colors = ['var(--neon-blue)', 'var(--neon-pink)', 'var(--neon-green)'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.opacity = Math.random() * 0.6 + 0.1;
+                particle.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px currentColor`;
+                
+                // Animación
+                particle.animate([
+                    { 
+                        transform: 'translate(0, 0)', 
+                        opacity: particle.style.opacity 
+                    },
+                    { 
+                        transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`, 
+                        opacity: Math.random() * 0.3 
+                    }
+                ], {
+                    duration: Math.random() * 4000 + 2000,
+                    iterations: Infinity,
+                    direction: 'alternate',
+                    easing: 'ease-in-out'
+                });
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Manejar el modal de usuario
+        const userModal = document.getElementById('userModal');
+        const usernameInput = document.getElementById('usernameInput');
+        const usernameBtn = document.getElementById('usernameBtn');
+        
+        function initUserModal() {
+            // Verificar si ya hay un usuario guardado
+            const savedUser = localStorage.getItem('pedroVsAbalosCurrentUser');
+            if (savedUser) {
+                currentUser = savedUser;
+                userModal.style.display = 'none';
+                startGameAfterLogin();
+            } else {
+                userModal.style.display = 'flex';
+            }
+            
+            // Evento para el botón
+            usernameBtn.addEventListener('click', () => {
+                const username = usernameInput.value.trim();
+                if (username.length > 0 && username.length <= 20) {
+                    currentUser = username;
+                    localStorage.setItem('pedroVsAbalosCurrentUser', username);
+                    userModal.style.display = 'none';
+                    startGameAfterLogin();
+                } else {
+                    usernameInput.style.borderColor = '#ff0000';
+                    usernameInput.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
+                    setTimeout(() => {
+                        usernameInput.style.borderColor = 'var(--glass-border)';
+                        usernameInput.style.boxShadow = 'none';
+                    }, 1000);
+                }
+            });
+            
+            // Permitir Enter para enviar
+            usernameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    usernameBtn.click();
+                }
+            });
+        }
+        
+        function startGameAfterLogin() {
+            // Ya estamos listos para jugar
+            initGame();
+        }
+        
+        // Obtener el canvas y contexto
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Elementos del DOM
+        const scoreElement = document.getElementById('score');
+        const highScoreElement = document.getElementById('highScore');
+        const finalScoreElement = document.getElementById('finalScore');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const restartBtn = document.getElementById('restartBtn');
+        const startInstruction = document.getElementById('startInstruction');
+        const celebrationOverlay = document.getElementById('celebrationOverlay');
+        const celebrationImage = document.getElementById('celebrationImage');
+        const abalosGif = document.getElementById('abalosGif');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const highScoreDisplay = document.getElementById('highScoreDisplay');
+        const leaderboardBody = document.getElementById('leaderboardBody');
+        
+        // Variables del juego
+        let gameSpeed = 7;
+        let score = 0;
+        let gameOver = false;
+        let gameStarted = false;
+        let highScore = localStorage.getItem('pedroVsAbalosHighScore') || 0;
+        let lastCelebrationScore = 0;
+        let totalRedObstacles = 0; // Contador de obstáculos rojos (Ábalos)
+        
+        // Sistema de puntuación global
+        const GLOBAL_SCORES_KEY = 'pedroVsAbalosGlobalScores';
+        
+        function getGlobalScores() {
+            const scoresJSON = localStorage.getItem(GLOBAL_SCORES_KEY);
+            if (scoresJSON) {
+                return JSON.parse(scoresJSON);
+            }
+            return [];
+        }
+        
+        function saveGlobalScore(playerName, score) {
+            const scores = getGlobalScores();
+            const newScore = {
+                player: playerName,
+                score: score,
+                date: new Date().toLocaleDateString('es-ES'),
+                timestamp: Date.now()
+            };
+            
+            scores.push(newScore);
+            scores.sort((a, b) => b.score - a.score);
+            const topScores = scores.slice(0, 10);
+            
+            localStorage.setItem(GLOBAL_SCORES_KEY, JSON.stringify(topScores));
+            updateLeaderboard();
+        }
+        
+        function updateLeaderboard() {
+            const scores = getGlobalScores();
+            leaderboardBody.innerHTML = '';
+            
+            if (scores.length === 0) {
+                leaderboardBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-secondary); font-size: 1.1rem;">
+                            ¡Sé el primero en jugar y aparecer aquí! 🎮
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            scores.forEach((scoreEntry, index) => {
+                const row = document.createElement('tr');
+                let rankClass = '';
+                
+                if (index === 0) rankClass = 'rank-1';
+                else if (index === 1) rankClass = 'rank-2';
+                else if (index === 2) rankClass = 'rank-3';
+                
+                row.innerHTML = `
+                    <td class="${rankClass}">${index + 1}º</td>
+                    <td class="player-name" title="${scoreEntry.player}">${scoreEntry.player}</td>
+                    <td class="player-score">${scoreEntry.score}</td>
+                    <td>${scoreEntry.date}</td>
+                `;
+                leaderboardBody.appendChild(row);
+            });
+        }
+        
+        // Sistema de fondos rotativos
+        const backgrounds = [
+            {
+                img: new Image(),
+                name: "Sala de reuniones",
+                src: '17469860886785.jpg'
+            },
+            {
+                img: new Image(),
+                name: "House of Commons",
+                src: '17310186512788.webp'
+            },
+            {
+                img: new Image(),
+                name: "Sanchez y Ábalos",
+                src: 'abalos-sanchez-kNVB-RDHeQh7BmYqzcYJJgMVorFP-1200x840@diario_abc.webp'
+            },
+            {
+                img: new Image(),
+                name: "Pedro Sánchez oficial",
+                src: 'pedro_sanchez-espana_464966259_240137361_1706x960.webp'
+            }
+        ];
+        
+        let currentBackgroundIndex = 0;
+        let backgroundChangeTimer = 0;
+        const BACKGROUND_CHANGE_INTERVAL = 7000;
+        
+        backgrounds.forEach((bg, index) => {
+            bg.img.src = bg.src;
+            bg.img.onerror = function() {
+                const backupCanvas = document.createElement('canvas');
+                backupCanvas.width = 1400;
+                backupCanvas.height = 550;
+                const backupCtx = backupCanvas.getContext('2d');
+                
+                const gradient = backupCtx.createLinearGradient(0, 0, 0, 550);
+                gradient.addColorStop(0, index === 0
