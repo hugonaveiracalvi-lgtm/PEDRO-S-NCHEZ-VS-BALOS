@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedro Sánchez vs Ábalos</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- FIREBASE COMPAT SCRIPTS (Global Scope) -->
+    <!-- Essential for running locally without a server -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- FIREBASE MANAGER (Now a normal script) -->
+    <script src="firebase-manager.js"></script>
+</head>
+
+<body>
+    <!-- DISCLAIMER SCREEN -->
+    <div id="disclaimer-screen">
+        <div class="disclaimer-content">
+            <div class="alert-header">
+                <span class="alert-icon">⚠️</span>
+                <span class="alert-text">ALERT</span>
+                <span class="alert-icon">⚠️</span>
+            </div>
+
+            <h1>COMUNICADO OFICIAL</h1>
+
+
+            <div class="disclaimer-body">
+                <p>El presente videojuego es una obra de ficción y sátira.<br>
+                    Su contenido tiene fines exclusivamente humorísticos.</p>
+
+                <p>No existe afiliación política, ideológica o partidista alguna por parte de su creador.</p>
+
+                <p>Las interpretaciones quedan bajo responsabilidad del jugador.</p>
+
+                <p class="final-warning">Dicho esto…<br>
+                    puedes pulsar COMENZAR.</p>
+
+                <div class="disclaimer-signature">BY GALLLUMBO</div>
+            </div>
+
+            <button id="disclaimer-start-btn">COMENZAR</button>
+        </div>
+    </div>
+
+    <!-- VIDEO INTRO WITH CENTERED LOADING BAR -->
+    <div id="intro-screen">
+        <video autoplay muted loop playsinline id="intro-video">
+            <source src="generated-video-c188e085-bb9b-4adb-89e0-a43758dbdf37.mp4" type="video/mp4">
+        </video>
+        <div class="intro-title-container">
+            <div class="title-name name-top">PEDRO SÁNCHEZ</div>
+            <div class="title-vs">VS</div>
+            <div class="title-name name-bottom">ÁBALOS</div>
+        </div>
+        <div class="loading-bar-wrapper">
+            <div class="loading-bar-container">
+                <div class="loading-bar-fill"></div>
+            </div>
+            <div class="loading-percentage">0%</div>
+        </div>
+    </div>
+
+    <!-- Top Right Buttons -->
+    <div id="cat-button-container">
+        <!-- New Guide Button (Left of Pulsame) -->
+        <button id="guide-btn" class="top-nav-btn">
+            <span class="btn-icon">📜</span>
+            <span>GUÍA</span>
+        </button>
+
+        <!-- Existing Cat Button -->
+        <a href="http://www.pedrosanchezdimision.com/" target="_blank" class="top-nav-btn">
+            <img src="gatito.webp" alt="Gatito Button" title="¡Púlsame!">
+            <span>pulsame</span>
+        </a>
+    </div>
+
+    <!-- Guide Modal -->
+    <div id="guideModal" class="guide-modal">
+        <div class="guide-modal-content">
+            <button class="close-guide-btn" id="closeGuideBtn">×</button>
+            <div class="guide-text-content">
+                <h2>🕹️ GUÍA OFICIAL</h2>
+                <h3>PEDRO SÁNCHEZ VS ÁBALOS</h3>
+
+                <p>Bienvenido, jugador.<br>
+                    España atraviesa tiempos difíciles.<br>
+                    Y tú estás aquí por una razón.</p>
+
+                <p>Tu misión es simple de explicar…<br>
+                    pero difícil de ejecutar:</p>
+
+                <ul class="guide-list">
+                    <li>👉 Correr</li>
+                    <li>👉 Esquivar marrones</li>
+                    <li>👉 No dejar que Ábalos te alcance</li>
+                </ul>
+
+                <p>Aquí no hay discursos.<br>
+                    Aquí solo cuentan los reflejos.</p>
+
+                <hr class="guide-separator">
+
+                <h3>🎮 CONTROLES DEL SISTEMA</h3>
+
+                <div class="control-grid">
+                    <div class="control-row">
+                        <span class="key-badge">⬆️ / ESPACIO / CLIC</span>
+                        <span>Saltar cuando la situación se pone comprometida.</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key-badge">⬇️ FLECHA ABAJO</span>
+                        <span>Agacharse y mirar hacia otro lado.<br><small>Una técnica muy utilizada.</small></span>
+                    </div>
+                </div>
+
+                <div class="official-note">
+                    <strong>Nota oficial:</strong><br>
+                    Si dudas, salta.<br>
+                    Si no saltas… puede que te pillen.
+                </div>
+
+                <hr class="guide-separator">
+
+                <h3>🧠 CÓMO FUNCIONA TODO ESTO</h3>
+
+                <ul class="guide-list-simple">
+                    <li>Pedro corre sin preguntar</li>
+                    <li>Los problemas aparecen sin avisar</li>
+                    <li>Cada segundo suma</li>
+                    <li>Cada error pesa</li>
+                </ul>
+
+                <p>Cuanto más avanzas:</p>
+                <ul class="guide-list-simple">
+                    <li>Más rápido va todo</li>
+                    <li>Más presión hay</li>
+                    <li>Más cerca está ÉL</li>
+                </ul>
+
+                <hr class="guide-separator">
+
+                <h3>😈 ÁBALOS – ENFRENTAMIENTO FINAL</h3>
+
+                <p>Cuando aparece el temporizador,<br>
+                    ya no sirven las explicaciones.</p>
+
+                <p>⏱️ Aguanta hasta el final.<br>
+                    No te confíes.<br>
+                    No mires atrás.<br>
+                    No falles.</p>
+
+                <p>Porque si te alcanza…</p>
+
+                <h4 class="text-danger">❌ DERROTA</h4>
+
+                <p>Ábalos se ríe.<br>
+                    Tu puntuación queda registrada.<br>
+                    Y todo vuelve a empezar.</p>
+
+                <p>Pero siempre hay otra oportunidad.<br>
+                    Como siempre.</p>
+
+                <hr class="guide-separator">
+
+                <h3>🏆 LOGROS INSTITUCIONALES</h3>
+
+                <div class="achievements-list">
+                    <p>🎮 <strong>Primera Partida</strong>: Ya has entrado en el barro.</p>
+                    <p>🌊 <strong>Explorador Acuático</strong>: Llegaste más lejos de lo previsto.</p>
+                    <p>🔥 <strong>Enfrentamiento Final</strong>: Lo miraste a los ojos.</p>
+                    <p>🏆 <strong>Héroe de España</strong>: Completaste el juego. Aguantaste hasta el final.</p>
+                    <p>🔍 <strong>Descubridor Secreto</strong>: Curiosear tiene premio.</p>
+                    <p>👀 <strong>Pichula Encontrada</strong>: No preguntes. Sigue jugando.</p>
+                </div>
+
+                <hr class="guide-separator">
+
+                <h3>👀 ADVERTENCIA FINAL</h3>
+
+                <p>Este juego contiene elementos que:</p>
+                <ul class="guide-list-simple">
+                    <li>No se explican</li>
+                    <li>No se anuncian</li>
+                    <li>No deberían estar ahí</li>
+                </ul>
+
+                <p>Pulsa con responsabilidad.</p>
+
+                <hr class="guide-separator">
+
+                <h3>🇪🇸 MENSAJE FINAL</h3>
+
+                <p class="final-quote">
+                    Corre.<br>
+                    Salta.<br>
+                    Esquiva.<br><br>
+                    Mantente en pie cuando todo se acelera.<br>
+                    No mires atrás cuando el ruido aumenta.<br><br>
+                    España te necesita.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pichula Button -->
+    <div id="pichula-container">
+        <button id="pichula-btn">
+            <img src="pichula_btn.jpg" alt="Pichula">
+        </button>
+        <span>PICHULA PEDRITO</span>
+    </div>
+
+    <!-- Modal para nombre de usuario -->
+    <div class="user-modal" id="userModal">
+        <div class="user-modal-content">
+            <div class="modal-images">
+                <img src="sanchez-635x358.webp" alt="Pedro" class="char-img">
+                <!-- Placeholder if img missing will use alt or style -->
+                <div class="vs-badge">VS</div>
+                <img src="W7WBFXIPPJEWXNG5JC76VA7M6I.jpg" alt="Ábalos" class="char-img">
+            </div>
+            <h2>¡HOLA COMPAÑERO!</h2>
+            <p>Para guardar tu progreso y aparecer en el ranking global, inicia sesión con Google.</p>
+
+            <div id="login-container">
+                <button class="google-btn" id="googleLoginBtn">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+                    <span>Iniciar sesión con Google</span>
+                </button>
+                <div class="divider">O</div>
+                <button class="guest-btn" id="guestBtn">Jugar como Invitado</button>
+            </div>
+
+            <!-- Hidden legacy input for fallback if needed, but we mostly replace it -->
+            <div id="guest-input-container" style="display:none;">
+                <input type="text" class="username-input" id="usernameInput" placeholder="Nombre de invitado..."
+                    maxlength="20">
+                <button class="username-btn" id="usernameBtn">COMENZAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Achievements Panel -->
+    <div class="achievements-panel" id="achievementsPanel">
+        <div class="achievements-header">🏆 LOGROS 🏆</div>
+        <div class="achievement-item" id="achievement-1" data-locked="true">
+            <div class="achievement-icon">🎮</div>
+            <div class="achievement-info">
+                <div class="achievement-title">Primera Partida</div>
+                <div class="achievement-desc">Juega al menos 1 vez</div>
+            </div>
+        </div>
+        <div class="achievement-item" id="achievement-2" data-locked="true">
+            <div class="achievement-icon">🌊</div>
+            <div class="achievement-info">
+                <div class="achievement-title">Explorador Acuático</div>
+                <div class="achievement-desc">Llega al modo acuático</div>
+            </div>
+        </div>
+        <div class="achievement-item" id="achievement-3" data-locked="true">
+            <div class="achievement-icon">🔥</div>
+            <div class="achievement-info">
+                <div class="achievement-title">Enfrentamiento Final</div>
+                <div class="achievement-desc">Llega al jefe final</div>
+            </div>
+        </div>
+        <div class="achievement-item" id="achievement-4" data-locked="true">
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-info">
+                <div class="achievement-title">Héroe de España</div>
+                <div class="achievement-desc">Completa el juego</div>
+            </div>
+        </div>
+        <div class="achievement-item" id="achievement-5" data-locked="true">
+            <div class="achievement-icon">🔍</div>
+            <div class="achievement-info">
+                <div class="achievement-title">Descubridor Secreto</div>
+                <div class="achievement-desc">Encuentra el botón oculto</div>
+            </div>
+        </div>
+        <div class="achievement-item" id="achievement-6" data-locked="true">
+            <div class="achievement-icon">👀</div>
+            <div class="achievement-info">
+                <div class="achievement-title">Pichula Encontrada</div>
+                <div class="achievement-desc">Encuentra la sorpresa</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>PEDRO SÁNCHEZ VS ÁBALOS</h1>
+        <div class="subtitle">AYUDA A PEDRO SÁNCHEZ A ESCAPAR DE LA CORRUPCIÓN</div>
+    </div>
+
+    <div class="game-container">
+        <canvas id="gameCanvas" width="1400" height="550"></canvas>
+        <div class="high-score" id="highScoreDisplay">RÉCORD: <span id="highScore">0</span></div>
+        <div class="score-container" id="scoreDisplay">PUNTUACIÓN: <span id="score">0</span></div>
+        <!-- Boss Timer -->
+        <div class="boss-timer" id="bossTimer">15.00</div>
+
+        <!-- Overlay para imagen de celebración -->
+        <div class="celebration-overlay" id="celebrationOverlay">
+            <img class="celebration-image" id="celebrationImage" src="sanchez-zoom-interior.jpg"
+                alt="Pedro Sánchez celebrando">
+        </div>
+
+        <!-- Pantalla de Game Over -->
+        <div class="game-over" id="gameOverScreen">
+            <img class="abalos-gif" id="abalosGif" src="abalos-rie.gif" alt="Ábalos riendo">
+            <h2>❌ ÁBALOS TE PILLÓ ❌</h2>
+            <p>Puntuación: <span id="finalScore">0</span></p>
+            <button class="restart-btn" id="restartBtn">JUGAR DE NUEVO</button>
+        </div>
+    </div>
+
+    <!-- Boss Victory Screen (Minimalist) -->
+    <div class="boss-victory-overlay" id="bossVictoryScreen">
+        <div class="boss-victory-content">
+            <h1 class="victory-title">HAS ESCAPADO DE ÁBALOS</h1>
+            <video class="victory-video" id="victoryVideo" autoplay muted>
+                <source src="abalosvid.mp4" type="video/mp4">
+            </video>
+            <button class="victory-continue-btn" id="victoryContinueBtn">CONTINUAR</button>
+        </div>
+    </div>
+
+    <!-- Final Message Screen -->
+    <div class="final-message-overlay" id="finalMessageScreen">
+        <div class="final-message-content">
+            <h1>¡FELICIDADES!</h1>
+            <p>HAS COMPLETADO EL JUEGO.</p>
+            <p>GRACIAS A TI, ESPAÑA NO CAERÁ EN MALAS MANOS.</p>
+            <p>NOS VEMOS EN LA PRÓXIMA, COMPAÑER@.</p>
+            <div class="press-space">PRESIONA ESPACIO PARA CONTINUAR</div>
+        </div>
+    </div>
+
+    <div class="start-instruction" id="startInstruction">
+        PRESIONA ESPACIO O HAZ CLIC PARA COMENZAR
+    </div>
+
+    <div class="controls">
+        <div class="control-item">
+            <div class="key">↑</div>
+            <div class="key-text">FLECHA ARRIBA<br>SALTAR</div>
+        </div>
+        <div class="control-item">
+            <div class="key">␣</div>
+            <div class="key-text">BARRA ESPACIADORA<br>SALTAR</div>
+        </div>
+        <div class="control-item">
+            <div class="key">↓</div>
+            <div class="key-text">FLECHA ABAJO<br>AGACHARSE</div>
+        </div>
+        <div class="control-item">
+            <div class="key">🖱️</div>
+            <div class="key-text">CLIC PANTALLA<br>SALTAR</div>
+        </div>
+    </div>
+
+    <!-- Tabla de clasificación fija abajo -->
+    <div class="leaderboard">
+        <h2><span>🏆</span> CLASIFICACIÓN GLOBAL <span>🏆</span></h2>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>POSICIÓN</th>
+                    <th>JUGADOR</th>
+                    <th>PUNTUACIÓN</th>
+                    <th>FECHA</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+                <!-- Las filas se generarán dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- Imágenes precargadas -->
+    <div style="display: none;">
+        <img id="pedroFaceImg" src="sanchez-635x358.webp">
+        <img id="abalosFaceImg" src="W7WBFXIPPJEWXNG5JC76VA7M6I.jpg">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
